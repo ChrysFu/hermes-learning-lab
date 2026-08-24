@@ -37,29 +37,22 @@ import {
   X,
 } from "lucide-react";
 import { architectureLayers, courseMetadata, learningResources, lessons, onboardingTracks, phases, repositories, surfaceGuides } from "./data";
+import { learningPaths, migrateProgress, searchLessons } from "./learningEngine";
+import { LearningHub, LearningReport, PracticeWorkbench } from "./learningViews";
 import { checkCompanion, companionServiceUrl, discoverCompanion, hasCompanionToken, pairCompanion, revokeCompanion } from "./localCompanion";
 
-const STORAGE_KEY = "hermes-learning-lab-progress-v3";
-const PREVIOUS_STORAGE_KEY = "hermes-learning-lab-progress-v2";
-const LEGACY_STORAGE_KEY = "hermes-learning-lab-progress-v1";
+const STORAGE_KEY = "hermes-learning-lab-progress-v4";
+const PREVIOUS_STORAGE_KEYS = ["hermes-learning-lab-progress-v3", "hermes-learning-lab-progress-v2", "hermes-learning-lab-progress-v1"];
 function readProgress() {
-  try {
-    const current = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (current?.version === 3 && Array.isArray(current.completed)) return current;
-
-    const previous = JSON.parse(localStorage.getItem(PREVIOUS_STORAGE_KEY));
-    if (previous?.version === 2 && Array.isArray(previous.completed)) {
-      return { ...previous, version: 3, verifiedLabs: [] };
+  for (const key of [STORAGE_KEY, ...PREVIOUS_STORAGE_KEYS]) {
+    try {
+      const stored = JSON.parse(localStorage.getItem(key));
+      if (stored && Array.isArray(stored.completed)) return migrateProgress(stored);
+    } catch {
+      // Invalid local data must never block the course.
     }
-
-    const legacy = JSON.parse(localStorage.getItem(LEGACY_STORAGE_KEY));
-    if (legacy?.version === 1 && Array.isArray(legacy.completed)) {
-      return { version: 3, completed: legacy.completed, activeLesson: legacy.activeLesson || 0, diagnostics: {}, verifiedLabs: [] };
-    }
-  } catch {
-    // Invalid local data must never block the course.
   }
-  return { version: 3, completed: [], activeLesson: 0, diagnostics: {}, verifiedLabs: [] };
+  return migrateProgress();
 }
 
 function ProgressRing({ value }) {
@@ -79,7 +72,10 @@ function ProgressRing({ value }) {
 }
 
 function CourseSidebar({ activeIndex, completed, verifiedLabs, onSelect, open, onClose }) {
+  const [query, setQuery] = useState("");
+  const [filterId, setFilterId] = useState("all");
   const mastered = lessons.filter((lesson) => completed.includes(lesson.id) && verifiedLabs.includes(lesson.id));
+  const shownLessons = searchLessons(lessons, query, filterId);
   return (
     <>
       {open ? <button className="sidebar-scrim" aria-label="关闭课程导航" onClick={onClose} /> : null}
@@ -93,9 +89,18 @@ function CourseSidebar({ activeIndex, completed, verifiedLabs, onSelect, open, o
         <div className="course-progress-copy"><span>双证据掌握</span><strong>{mastered.length} / {lessons.length}</strong></div>
         <div className="linear-progress" aria-hidden="true"><span style={{ width: `${(mastered.length / lessons.length) * 100}%` }} /></div>
 
+        <div className="sidebar-search">
+          <label><span>搜索课程</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="例如 飞书、Memory、恢复" /></label>
+          <select aria-label="筛选学习路线" value={filterId} onChange={(event) => setFilterId(event.target.value)}>
+            <option value="all">全部 13 课</option>
+            {learningPaths.map((path) => <option key={path.id} value={path.id}>{path.label}</option>)}
+          </select>
+        </div>
+
         <nav className="lesson-nav" aria-label="课程目录">
           {phases.map((phase) => {
-            const phaseLessons = lessons.filter((lesson) => lesson.phaseId === phase.id);
+            const phaseLessons = shownLessons.filter((lesson) => lesson.phaseId === phase.id);
+            if (!phaseLessons.length) return null;
             const phaseDone = phaseLessons.filter((lesson) => completed.includes(lesson.id) && verifiedLabs.includes(lesson.id)).length;
             return (
               <div className="phase-group" key={phase.id}>
@@ -123,6 +128,7 @@ function CourseSidebar({ activeIndex, completed, verifiedLabs, onSelect, open, o
               </div>
             );
           })}
+          {!shownLessons.length ? <p className="sidebar-empty">没有匹配的课程。</p> : null}
         </nav>
 
         <div className="source-note"><GitFork size={14} /><span>官方资料 + AI-For-Beginners 教学法</span></div>
@@ -133,7 +139,10 @@ function CourseSidebar({ activeIndex, completed, verifiedLabs, onSelect, open, o
 
 function AppTopbar({ view, setView, lesson, phase, onOpenMenu }) {
   const tabs = [
+    { id: "hub", label: "路线", icon: GraduationCap },
     { id: "course", label: "课程", icon: BookOpen },
+    { id: "workbench", label: "练习台", icon: FlaskConical },
+    { id: "report", label: "报告", icon: ListChecks },
     { id: "research", label: "资料研究", icon: GitFork },
     { id: "architecture", label: "教学架构", icon: Layers3 },
   ];
@@ -821,12 +830,12 @@ function ArchitectureView() {
       <section className="architecture-table-section">
         <h2>技术架构与边界</h2>
         <div className="architecture-table">
-          <div><strong>内容</strong><span>13 课 / 4 阶段；安装命令和时效性配置均链接当前官方资料</span></div>
-          <div><strong>交互</strong><span>课前诊断 + 四步操作 + 真实实验 + 结果清单 + 恢复动作 + 课后检查</span></div>
-          <div><strong>状态</strong><span>localStorage v3；保存诊断、实验验收、课后检查和最近位置，兼容迁移 v1/v2</span></div>
-          <div><strong>安全</strong><span>命令均为模拟展示；不访问 Shell、~/.hermes、凭据或外部消息平台</span></div>
+          <div><strong>内容</strong><span>13 课 / 4 阶段 / 3 条路线；安装命令和时效性配置均链接当前官方资料</span></div>
+          <div><strong>交互</strong><span>路线诊断 + 核心操作 + 真实实验 + Prompt 工作台 + 证据评分 + 恢复演练</span></div>
+          <div><strong>状态</strong><span>localStorage v4 默认保存；可选 Supabase GitHub/邮箱同步，兼容迁移 v1-v3</span></div>
+          <div><strong>安全</strong><span>不执行生成的 Prompt；Companion 只读且每次确认；原始证据和 Hermes 数据不上传</span></div>
           <div><strong>响应式</strong><span>桌面三栏、平板双栏、手机课程抽屉；保持同一学习顺序</span></div>
-          <div><strong>扩展</strong><span>后续可接入真实隔离实验 runner、账号同步、教师看板与版本化内容更新</span></div>
+          <div><strong>扩展</strong><span>后续可接入隔离实验 runner、教师看板、版本化内容与高级评测目录</span></div>
         </div>
       </section>
     </div>
@@ -839,14 +848,28 @@ export default function App() {
   const [completed, setCompleted] = useState(initial.completed.filter((id) => lessons.some((lesson) => lesson.id === id)));
   const [verifiedLabs, setVerifiedLabs] = useState((initial.verifiedLabs || []).filter((id) => lessons.some((lesson) => lesson.id === id)));
   const [diagnostics, setDiagnostics] = useState(initial.diagnostics || {});
-  const [view, setView] = useState("course");
+  const [pathId, setPathId] = useState(initial.pathId);
+  const [evidenceReports, setEvidenceReports] = useState(initial.evidenceReports || []);
+  const [view, setView] = useState("hub");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const lesson = lessons[activeLesson];
   const phase = phases.find((item) => item.id === lesson.phaseId);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 3, completed, verifiedLabs, activeLesson, diagnostics }));
-  }, [completed, verifiedLabs, activeLesson, diagnostics]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 4, completed, verifiedLabs, activeLesson, diagnostics, pathId, evidenceReports }));
+  }, [completed, verifiedLabs, activeLesson, diagnostics, pathId, evidenceReports]);
+
+  const currentProgress = { version: 4, completed, verifiedLabs, activeLesson, diagnostics, pathId, evidenceReports };
+
+  const applyMergedProgress = (progress) => {
+    const merged = migrateProgress(progress);
+    setCompleted(merged.completed.filter((id) => lessons.some((lesson) => lesson.id === id)));
+    setVerifiedLabs(merged.verifiedLabs.filter((id) => lessons.some((lesson) => lesson.id === id)));
+    setDiagnostics(merged.diagnostics);
+    setPathId(merged.pathId);
+    setEvidenceReports(merged.evidenceReports);
+    setActiveLesson(Math.min(merged.activeLesson, lessons.length - 1));
+  };
 
   const navigateLesson = (index) => {
     if (index < 0 || index >= lessons.length) return;
@@ -865,10 +888,11 @@ export default function App() {
     setCompleted([]);
     setVerifiedLabs([]);
     setDiagnostics({});
+    setPathId("quick-start");
+    setEvidenceReports([]);
     setActiveLesson(0);
     localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(PREVIOUS_STORAGE_KEY);
-    localStorage.removeItem(LEGACY_STORAGE_KEY);
+    PREVIOUS_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
   };
 
   return (
@@ -877,7 +901,10 @@ export default function App() {
       <main className="main-shell">
         <AppTopbar view={view} setView={selectView} lesson={lesson} phase={phase} onOpenMenu={() => setSidebarOpen(true)} />
         <div className="main-scroll">
+          {view === "hub" ? <LearningHub lessons={lessons} pathId={pathId} completed={completed} verifiedLabs={verifiedLabs} onSelectPath={setPathId} onNavigate={navigateLesson} /> : null}
           {view === "course" ? <CourseView key={lesson.id} lesson={lesson} lessonIndex={activeLesson} completed={completed} labVerified={verifiedLabs.includes(lesson.id)} diagnostic={diagnostics[lesson.id]} onDiagnose={(id, passed) => setDiagnostics((current) => ({ ...current, [id]: passed ? "correct" : "review" }))} onComplete={(id) => setCompleted((current) => current.includes(id) ? current : [...current, id])} onVerify={(id) => setVerifiedLabs((current) => current.includes(id) ? current : [...current, id])} onNavigate={navigateLesson} /> : null}
+          {view === "workbench" ? <PracticeWorkbench onEvidenceReport={(report) => setEvidenceReports((current) => [report, ...current].slice(0, 20))} /> : null}
+          {view === "report" ? <LearningReport progress={currentProgress} onMerge={applyMergedProgress} /> : null}
           {view === "research" ? <ResearchView /> : null}
           {view === "architecture" ? <ArchitectureView /> : null}
         </div>

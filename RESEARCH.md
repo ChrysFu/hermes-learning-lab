@@ -1,6 +1,8 @@
 # Hermes 课程资料研究
 
-核验日期：2026-08-08。课程当前以 [Hermes Agent v0.20.0（Release tag `v2026.8.3`）](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.3) 为版本基线。事实优先级为 Hermes 官方文档与仓库、NousResearch 模型卡、官方工具链；AI-For-Beginners 只用于教学结构；社区资料只提供界面与实践视角。
+核验日期：2026-08-24。课程当前以 [Hermes Agent v0.20.5（Release tag `v2026.8.19`）](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.19) 为版本基线。事实优先级为 Hermes 官方文档与仓库、NousResearch 模型卡、官方工具链；AI-For-Beginners 只用于教学结构；社区资料只提供界面与实践视角。
+
+近期同类 GitHub 项目的元数据、设计优点、采用项和拒绝项见 [`docs/research/2026-08-24-similar-projects.md`](./docs/research/2026-08-24-similar-projects.md)。该报告使用 GitHub API、仓库 README 与官方文档作为一手资料，并直接驱动三路线、能力门控、Prompt 工作台、证据评分、恢复演练和掌握报告。
 
 ## AI-For-Beginners 教学启发
 
@@ -146,4 +148,4 @@ Prompt contract -> Skill -> SFT / LoRA -> RL with Atropos
 
 ## 版本注意
 
-Hermes 迭代较快，社区教程和命令可能滞后。当前核验基线是 Hermes Agent v0.20.0（`v2026.8.3`，官方 Release 发布于 2026-08-03）。课程把稳定心智模型放在正文，把具体命令链接到当前官方资料；发布前需要运行链接检查，并定期复核配置键、工具解析器和模型参数。
+Hermes 迭代较快，社区教程和命令可能滞后。当前核验基线是 Hermes Agent v0.20.5（`v2026.8.19`，官方 Release 发布于 2026-08-21）。课程把稳定心智模型放在正文，把具体命令链接到当前官方资料；发布前需要运行链接检查，并定期复核配置键、工具解析器和模型参数。

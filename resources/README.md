@@ -1,6 +1,6 @@
 # Hermes Agent 电子资料库
 
-核验日期：2026-08-08。当前 Hermes Agent 版本基线为 [v0.20.0（`v2026.8.3`）](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.3)。
+核验日期：2026-08-24。当前 Hermes Agent 版本基线为 [v0.20.5（`v2026.8.19`）](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.19)。
 
 本目录收录 Hermes Learning Lab 使用的公开电子资料、原创摘要和课程映射。第三方 PDF、文章、视频字幕及教程正文不复制进仓库；点击原始链接在线阅读，并在实际操作前用官方文档复核命令。
 

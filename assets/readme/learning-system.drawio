@@ -14,12 +14,12 @@
             <mxGeometry height="54" width="243" x="173" y="164" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="13-lesson curriculum" mermaidId="n:C" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="13-lesson curriculum" id="4">
+        <UserObject label="13 lessons / 3 routes" mermaidId="n:C" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="13 lessons / 3 routes" id="4">
           <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
             <mxGeometry height="54" width="208" x="623" y="8" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Lab evidence and post-check" mermaidId="n:V" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Lab evidence and post-check" id="5">
+        <UserObject label="Prompt / evidence / mastery" mermaidId="n:V" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Prompt / evidence / mastery" id="5">
           <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#2c2418;strokeColor=#e7a83e;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
             <mxGeometry height="54" width="268" x="593" y="112" as="geometry" />
           </mxCell>
@@ -29,12 +29,12 @@
             <mxGeometry height="54" width="236" x="609" y="216" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="localStorage v3 progress" mermaidId="n:S" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="localStorage v3 progress" id="7">
+        <UserObject label="localStorage v4 / optional sync" mermaidId="n:S" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="localStorage v4 / optional sync" id="7">
           <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
             <mxGeometry height="54" width="234" x="966" y="112" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Vite read-only probe" mermaidId="n:P" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Vite read-only probe" id="8">
+        <UserObject label="Loopback Companion" mermaidId="n:P" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Loopback Companion" id="8">
           <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;fillColor=#16251d;strokeColor=#70b58a;fontColor=#f1efe8;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
             <mxGeometry height="54" width="208" x="623" y="320" as="geometry" />
           </mxCell>

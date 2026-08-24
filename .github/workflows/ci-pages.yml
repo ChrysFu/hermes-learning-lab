@@ -26,6 +26,9 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run lint
       - run: npm run build:pages
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
       - name: Run Playwright against the Pages base path
         run: npm run test:e2e
         env:

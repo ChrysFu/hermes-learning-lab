@@ -4,6 +4,8 @@ test("loads the first lesson and switches primary views", async ({ page }) => {
   await page.goto("./");
 
   await expect(page).toHaveTitle("Hermes Learning Lab");
+  await expect(page.getByRole("heading", { level: 1, name: "选择一条能产出结果的 Hermes 路线" })).toBeVisible();
+  await page.getByRole("tab", { name: "课程" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "安装 Hermes，并完成桌面与飞书首轮体验" })).toBeVisible();
 
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -11,7 +13,7 @@ test("loads the first lesson and switches primary views", async ({ page }) => {
 
   await page.getByRole("tab", { name: "资料研究" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Hermes 技术与教学资料" })).toBeVisible();
-  await expect(page.getByText("Hermes Agent v0.20.0（v2026.8.3）")).toBeVisible();
+  await expect(page.getByText("Hermes Agent v0.20.5（v2026.8.19）")).toBeVisible();
   await expect(page.locator(".access-state.is-open", { hasText: "YouTube 直接观看" })).toHaveCount(3);
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
 
@@ -19,9 +21,37 @@ test("loads the first lesson and switches primary views", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1, name: "从资料到可验证学习闭环" })).toBeVisible();
 });
 
+test("recommends a route and scores redacted evidence in the workbench", async ({ page }) => {
+  await page.goto("./");
+
+  await page.getByRole("button", { name: "工程交付", exact: true }).click();
+  await page.getByRole("button", { name: "熟悉 Agent", exact: true }).click();
+  await page.getByRole("button", { name: "两端都用", exact: true }).click();
+  await page.getByRole("button", { name: "生成推荐" }).click();
+  await expect(page.getByText("工程路线会优先练习工具边界、隔离、并行任务和恢复。")).toBeVisible();
+
+  await page.getByRole("tab", { name: "练习台" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "把任务写清楚，再用证据结束" })).toBeVisible();
+  await expect(page.locator(".prompt-preview pre")).toContainText("停止条件");
+  await page.getByLabel("粘贴 Hermes 版本、Doctor、固定回执、运行状态与恢复记录").fill("Hermes v0.20.5\nDoctor: pass\nDESKTOP_OK\nGateway: running\nRecovery: gateway stopped");
+  await page.getByRole("button", { name: "运行评分" }).click();
+  await expect(page.locator(".evidence-score > strong")).toContainText("100");
+  await expect(page.getByText("证据完整且未发现敏感信息。")).toBeVisible();
+
+  await page.getByRole("button", { name: "确认本机服务监听 127.0.0.1:43127" }).click();
+  await page.getByRole("button", { name: "检查恢复动作" }).click();
+  await expect(page.getByText(/先确认最短链路/)).toBeVisible();
+
+  await page.getByRole("tab", { name: "报告" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "掌握度来自两种证据" })).toBeVisible();
+  await expect(page.getByText("当前部署未配置 Supabase")).toBeVisible();
+});
+
 test("static builds disable the local probe and keep receipt verification", async ({ page }) => {
   await page.route("http://127.0.0.1:43127/v1/health", (route) => route.abort());
   await page.goto("./");
+
+  await page.getByRole("tab", { name: "课程" }).click();
 
   await expect(page.getByText("本机伴随服务未连接")).toBeVisible();
   await expect(page.getByRole("link", { name: "下载 macOS 启动脚本" })).toBeVisible();
@@ -39,6 +69,8 @@ test("pairs with the local companion and shows redacted status", async ({ page }
   });
   await page.route("http://127.0.0.1:43127/v1/check", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ hermesInstalled: true, desktopRunning: true, gatewayRunning: false, hermesVersion: "v0.20.0", doctor: { status: "pass", summary: "Doctor completed without blocking issues." }, checkedAt: "2026-08-08T00:00:00.000Z" }) }));
   await page.goto("./");
+
+  await page.getByRole("tab", { name: "课程" }).click();
 
   await expect(page.getByText("先配对这台浏览器")).toBeVisible();
   await page.getByLabel("本机伴随服务配对码").fill("ABCD-2345");
