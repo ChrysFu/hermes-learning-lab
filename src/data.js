@@ -6,11 +6,13 @@ export const phases = [
 ];
 
 export const courseMetadata = {
-  hermesVersion: "v0.20.0",
-  hermesReleaseTag: "v2026.8.3",
-  verifiedOn: "2026-08-08",
-  releaseUrl: "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.3",
+  hermesVersion: "v0.20.5",
+  hermesReleaseTag: "v2026.8.19",
+  verifiedOn: "2026-08-24",
+  releaseUrl: "https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.19",
 };
+
+const assetBaseUrl = import.meta.env?.BASE_URL || "/";
 
 const option = (id, label, detail) => ({ id, label, detail });
 
@@ -93,7 +95,7 @@ export const surfaceGuides = {
     label: "Hermes Desktop",
     title: "从课程界面切换到真实 Desktop",
     summary: "先认识真实窗口中的稳定地标，再在同一个 Agent 运行时里完成新会话、模型确认、消息发送与工具审批。",
-    image: `${import.meta.env.BASE_URL}ui-reference/hermes-desktop-official.png`,
+    image: `${assetBaseUrl}ui-reference/hermes-desktop-official.png`,
     imageAlt: "NousResearch 官方 Hermes Desktop 界面，左侧为导航和会话，中间为聊天区，底部为输入框与状态栏",
     sourceLabel: "官方仓库界面实景",
     sourceUrl: "https://github.com/NousResearch/hermes-agent/blob/main/apps/desktop/pr-assets/session-source-folders.png",
@@ -414,24 +416,27 @@ export const repositories = [
   { name: "NousResearch/hermes-agent-self-evolution", role: "官方实验项目", language: "Python", url: "https://github.com/NousResearch/hermes-agent-self-evolution", idea: "用 DSPy + GEPA 对 Skills、提示与代码进行基于评测的迭代优化。", design: "把自我改进变成候选生成、评测、比较与保留优胜版本的闭环。", features: ["GEPA 优化", "Skill 演化", "可度量评测", "实验追踪"] },
   { name: "NousResearch/atropos", role: "官方 RL 工具链", language: "Python", url: "https://github.com/NousResearch/atropos", idea: "为 Agent 和语言模型训练构建可复现的强化学习环境与 rollout 工作流。", design: "用显式环境、奖励与评测把行为优化建立在可测任务上。", features: ["RL environments", "Rollouts", "Reward design", "Training workflows"] },
   { name: "fathah/hermes-desktop", role: "社区桌面端", language: "TypeScript", url: "https://github.com/fathah/hermes-desktop", idea: "用原生桌面工作台降低安装、Provider 配置和日常管理门槛。", design: "围绕会话、Profile、Memory、Skills、Schedules 与 Gateway 组织 GUI。", features: ["引导式安装", "流式工具进度", "Profile / Memory", "Schedules / Messaging"] },
+  { name: "outsourc-e/hermes-workspace", role: "社区 Web 工作台", language: "JavaScript + React", url: "https://github.com/outsourc-e/hermes-workspace", idea: "把仅聊天的 Portable 模式与 Gateway 增强模式明确分级，并在能力缺失时显示可恢复状态。", design: "默认 loopback、能力门控、健康检查和可见降级，避免后端不可用时出现空白界面。", features: ["Portable / Enhanced", "Capability gates", "Health checks", "Loopback defaults"] },
+  { name: "microsoft/ai-agents-for-beginners", role: "Agent 教学参考", language: "Jupyter + Markdown", url: "https://github.com/microsoft/ai-agents-for-beginners", idea: "按目标组织多条 Agent 学习路径，并用可重复 smoke tests 验证状态、关键词和多轮结果。", design: "每课统一目标、Try this、自检与继续学习，课程目录和 Study Guide 提供多路径入口。", features: ["Study Guide", "Goal-based paths", "JSON smoke tests", "Multi-turn checks"] },
+  { name: "huggingface/agents-course", role: "实战评测参考", language: "MDX + Python", url: "https://github.com/huggingface/agents-course", idea: "用阶段课程、最终项目、结构化提交和自动评分把学习结果变成可验证 artifact。", design: "基础单元逐步进入框架、RAG 和综合任务，开放式 Agent 结果通过明确任务与评测反馈收口。", features: ["Hands-on units", "Final assignment", "Evaluation API", "Benchmark"] },
   { name: "0xNyk/awesome-hermes-agent", role: "社区资源索引", language: "Markdown", url: "https://github.com/0xNyk/awesome-hermes-agent", idea: "聚合 Surfaces、Skills、Plugins、Memory Providers 与 Guides。", design: "通过类别和成熟度帮助学习者发现生态，同时保留来源审查责任。", features: ["Skills", "Plugins", "Memory providers", "Guides"] },
   { name: "alchaincyf/hermes-agent-orange-book", role: "中文学习资料", language: "PDF / Markdown", url: "https://github.com/alchaincyf/hermes-agent-orange-book", idea: "从自改进、记忆、工具、多 Agent、安全与部署建立中文整体视角。", design: "概念解释配合界面和架构分析，补充官方文档之外的学习路径。", features: ["中文指南", "记忆分析", "多 Agent", "安全边界"] },
 ];
 
 export const learningResources = [
   { id: "official-docs", title: "Hermes Agent 官方文档", kind: "在线文档", language: "英文", authority: "官方", access: "全文公开", url: "https://hermes-agent.nousresearch.com/docs/", summary: "安装、Desktop、CLI、Provider、Tools、Skills、Memory、Cron、Messaging、安全和排错的事实基准。", lessonIds: lessons.map((lesson) => lesson.id) },
-  { id: "official-repo", title: "NousResearch/hermes-agent", kind: "源码与 README", language: "英文 / 中文", authority: "官方", access: "全文公开", url: "https://github.com/NousResearch/hermes-agent", summary: "用于核对当前安装命令、CLI、Gateway、迁移行为、Release 与实现边界。", lessonIds: ["installation-channels", "setup-doctor", "agent-loop", "skills", "delegation", "backup-restore", "capstone"] },
-  { id: "orange-book", title: "Hermes Agent 橙皮书 2.0", kind: "PDF 电子书", language: "中文", authority: "社区", access: "在线预览 / 下载", url: "https://github.com/alchaincyf/hermes-agent-orange-book/blob/main/Hermes-Agent%E6%A9%99%E7%9A%AE%E4%B9%A62.0-v260607.pdf", summary: "用中文串联 Desktop、浏览器管理、记忆、Skills、多 Agent、消息平台与安全；具体命令需回查官方资料。", lessonIds: ["installation-channels", "memory", "skills", "automation", "delegation", "security"] },
-  { id: "awesome", title: "awesome-hermes-agent", kind: "资源目录", language: "英文", authority: "社区", access: "全文公开", url: "https://github.com/0xNyk/awesome-hermes-agent", summary: "按 Surfaces、Skills、Plugins、Memory Providers、Tools 与 Guides 寻找进阶材料。", lessonIds: ["skills", "automation", "delegation", "capstone"] },
-  { id: "zh-course", title: "hermes-agent-zh", kind: "GitHub 教程", language: "中文", authority: "社区", access: "全文公开", url: "https://github.com/dongsheng123132/hermes-agent-zh", summary: "覆盖 macOS、Windows、云端部署、Provider、Ollama、Cron、MCP、IM 接入、案例与 FAQ。", lessonIds: ["installation-channels", "setup-doctor", "model-switching", "skills", "automation", "backup-restore"] },
-  { id: "papaya-video", title: "Hermes Agent 保姆级教学", kind: "YouTube 视频", language: "中文", authority: "社区", access: "YouTube 直接观看", url: "https://www.youtube.com/watch?v=-EivK7vpOXY", summary: "演示本机/云端安装、Telegram、Memory、OpenRouter、搜索、Subagent、Cron、Skills、Notion、备份与防火墙。", lessonIds: ["installation-channels", "memory", "skills", "automation", "delegation", "backup-restore"] },
-  { id: "tips-video", title: "Hermes Agent 新手使用十大技巧", kind: "YouTube 视频", language: "中文", authority: "社区", access: "YouTube 直接观看", url: "https://www.youtube.com/watch?v=hLiN_X7dzdw", summary: "公开章节元数据覆盖模型、SOUL、Memory、聊天通道、Doctor、UI、迁移与 Skills。", lessonIds: ["setup-doctor", "model-switching", "memory", "skills", "backup-restore"] },
+  { id: "official-repo", title: "NousResearch/hermes-agent", kind: "源码与 README", language: "英文 / 中文", authority: "官方", access: "全文公开", url: "https://github.com/NousResearch/hermes-agent", summary: "用于核对当前安装命令、CLI、Gateway、迁移行为、Release 与实现边界。", lessonIds: ["installation-channels", "setup-doctor", "agent-loop", "skills-plugins-mcp", "delegation-routing", "backup-restore", "capstone"] },
+  { id: "orange-book", title: "Hermes Agent 橙皮书 2.0", kind: "PDF 电子书", language: "中文", authority: "社区", access: "在线预览 / 下载", url: "https://github.com/alchaincyf/hermes-agent-orange-book/blob/main/Hermes-Agent%E6%A9%99%E7%9A%AE%E4%B9%A62.0-v260607.pdf", summary: "用中文串联 Desktop、浏览器管理、记忆、Skills、多 Agent、消息平台与安全；具体命令需回查官方资料。", lessonIds: ["installation-channels", "sessions-memory", "skills-plugins-mcp", "automation", "delegation-routing", "sandbox-security"] },
+  { id: "awesome", title: "awesome-hermes-agent", kind: "资源目录", language: "英文", authority: "社区", access: "全文公开", url: "https://github.com/0xNyk/awesome-hermes-agent", summary: "按 Surfaces、Skills、Plugins、Memory Providers、Tools 与 Guides 寻找进阶材料。", lessonIds: ["skills-plugins-mcp", "automation", "delegation-routing", "capstone"] },
+  { id: "zh-course", title: "hermes-agent-zh", kind: "GitHub 教程", language: "中文", authority: "社区", access: "全文公开", url: "https://github.com/dongsheng123132/hermes-agent-zh", summary: "覆盖 macOS、Windows、云端部署、Provider、Ollama、Cron、MCP、IM 接入、案例与 FAQ。", lessonIds: ["installation-channels", "setup-doctor", "models-profiles", "skills-plugins-mcp", "automation", "backup-restore"] },
+  { id: "papaya-video", title: "Hermes Agent 保姆级教学", kind: "YouTube 视频", language: "中文", authority: "社区", access: "YouTube 直接观看", url: "https://www.youtube.com/watch?v=-EivK7vpOXY", summary: "演示本机/云端安装、Telegram、Memory、OpenRouter、搜索、Subagent、Cron、Skills、Notion、备份与防火墙。", lessonIds: ["installation-channels", "sessions-memory", "skills-plugins-mcp", "automation", "delegation-routing", "backup-restore"] },
+  { id: "tips-video", title: "Hermes Agent 新手使用十大技巧", kind: "YouTube 视频", language: "中文", authority: "社区", access: "YouTube 直接观看", url: "https://www.youtube.com/watch?v=hLiN_X7dzdw", summary: "公开章节元数据覆盖模型、SOUL、Memory、聊天通道、Doctor、UI、迁移与 Skills。", lessonIds: ["setup-doctor", "models-profiles", "sessions-memory", "skills-plugins-mcp", "backup-restore"] },
   { id: "desktop-video", title: "Hermes Agent 桌面版正式发布", kind: "YouTube 视频", language: "中文", authority: "社区", access: "YouTube 直接观看", url: "https://www.youtube.com/watch?v=FdSVeOAd480", summary: "适合观察 Windows、macOS、Linux 桌面版的真实界面与首次操作。", lessonIds: ["installation-channels"] },
 ];
 
 export const architectureLayers = [
-  { title: "Curriculum", detail: "13 课、4 阶段课程数据，包含多端安装、先修、诊断、核心操作、真实实验、证据、恢复、课后检查与来源。" },
-  { title: "Learning Engine", detail: "诊断判定、实验清单、课后检查、双证据掌握度与针对性反馈由前端状态机驱动。" },
-  { title: "Persistence", detail: "localStorage v3 保存课后检查、实验验收、诊断结果与最近位置，并迁移 v1/v2 数据。" },
-  { title: "Safety Shell", detail: "React 浏览器模拟默认无副作用；本地 Vite 仅在用户点击时执行只读状态探针，不返回配置、凭据、日志或消息。" },
+  { title: "Curriculum", detail: "13 课、4 阶段与 3 条目标路线；每课包含诊断、核心操作、真实实验、证据、恢复、课后检查与来源。" },
+  { title: "Learning Engine", detail: "路线推荐、搜索、Prompt 契约、脱敏证据评分、恢复演练与双证据掌握度由可测试的纯函数驱动。" },
+  { title: "Persistence", detail: "localStorage v4 默认保存；登录后可选 Supabase GitHub/邮箱同步，并兼容迁移 v1-v3 数据。" },
+  { title: "Safety Shell", detail: "模拟、loopback Companion 与证据导入三层能力明确分开；不执行 Prompt，不上传原始证据，不读取凭据或消息。" },
 ];
